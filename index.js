@@ -41,6 +41,13 @@ async function run() {
       res.send(result);
     });
 
+    //get all parcels
+    app.get('/parcels/:email', async(req, res) => {
+      const email = req.params.email;
+      const result = await bookingCollection.find({email}).toArray();
+      res.send(result)
+    })
+
     //PUT API's
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
