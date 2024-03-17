@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -26,7 +26,9 @@ async function run() {
 
     //collections
     const userCollection = client.db("QuickDrop").collection("userCollection");
-    const bookingCollection = client.db("QuickDrop").collection("bookingCollection");
+    const bookingCollection = client
+      .db("QuickDrop")
+      .collection("bookingCollection");
 
     //GET API's
     app.get("/users", async (req, res) => {
@@ -42,11 +44,11 @@ async function run() {
     });
 
     //get all parcels
-    app.get('/parcels/:email', async(req, res) => {
+    app.get("/parcels/:email", async (req, res) => {
       const email = req.params.email;
-      const result = await bookingCollection.find({email}).toArray();
-      res.send(result)
-    })
+      const result = await bookingCollection.find({ email }).toArray();
+      res.send(result);
+    });
 
     //PUT API's
     app.put("/users/:email", async (req, res) => {
@@ -55,7 +57,7 @@ async function run() {
       const query = { email: email };
       const options = { upsert: true };
       const isExist = await userCollection.findOne(query);
-      console.log("User found?----->", isExist);
+      // console.log("User found?----->", isExist);
       if (isExist) {
         if (user?.status === "Requested") {
           const result = await userCollection.updateOne(
@@ -82,11 +84,30 @@ async function run() {
     });
 
     //POST API's
-    app.post('/bookings', async(req, res) => {
+    app.post("/bookings", async (req, res) => {
       const booking = req.body;
       const result = await bookingCollection.insertOne(booking);
-      res.send(result)
-    })
+      res.send(result);
+    });
+
+    //PATCH API's
+    app.patch("/users-updte/:email", async (req, res) => {
+      const userEmail = req.params.email;
+      console.log(userEmail)
+      const update = req.body;
+      const query = {
+        email : userEmail,
+      };
+      // const updateUser = {
+      //   $set: {
+      //     name: update.name,
+      //     email: update.email,
+      //     photoURL: update.photoURL,
+      //   },
+      // };
+      // const result = await userCollection.updateOne(query, updateUser);
+      // res.send(result)
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
