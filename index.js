@@ -91,22 +91,20 @@ async function run() {
     });
 
     //PATCH API's
-    app.patch("/users-updte/:email", async (req, res) => {
+    app.patch("/users-update/:email", async (req, res) => {
       const userEmail = req.params.email;
-      console.log(userEmail)
       const update = req.body;
       const query = {
         email : userEmail,
       };
-      // const updateUser = {
-      //   $set: {
-      //     name: update.name,
-      //     email: update.email,
-      //     photoURL: update.photoURL,
-      //   },
-      // };
-      // const result = await userCollection.updateOne(query, updateUser);
-      // res.send(result)
+      const updateUser = {
+        $set: {
+          name: update.name,
+          photoURL: update.photoURL,
+        },
+      };
+      const result = await userCollection.updateOne(query, updateUser);
+      res.send(result)
     });
 
     // Send a ping to confirm a successful connection
