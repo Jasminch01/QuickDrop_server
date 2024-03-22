@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const express = require("express");
 const cors = require("cors");
+const moment = require("moment");
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
@@ -54,6 +55,7 @@ async function run() {
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
       const user = req.body;
+      const timestamp = moment().format('MMMM Do YYYY, h:mm:ss a');
       const query = { email: email };
       const options = { upsert: true };
       const isExist = await userCollection.findOne(query);
@@ -75,11 +77,10 @@ async function run() {
       const result = await userCollection.updateOne(
         query,
         {
-          $set: { ...user, timestamp: Date.now() },
+          $set: { ...user, timestamp: timestamp },
         },
         options
       );
-      console.log(user);
       res.send(result);
     });
 
