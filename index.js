@@ -114,6 +114,16 @@ async function run() {
       res.send(result)
     });
 
+    app.patch('update-role/:id', async(req, res) => {
+      const userId = req.params.id;
+      const updateRole = req.body;
+      const query = {
+        _id : new ObjectId(userId)
+      }
+      const result = await userCollection.updateOne(query, updateRole)
+      res.send(result)
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
