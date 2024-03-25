@@ -57,6 +57,15 @@ async function run() {
       res.send(result)
     })
 
+    //get all delivery mans
+    app.get("/users/deliverymans", async(req, res) => {
+      const query = {
+        role : "delivery_Man"
+      }
+      const result = await userCollection.find(query).toArray();
+      res.send(result)
+    })
+
     //PUT API's
     app.put("/users/:email", async (req, res) => {
       const email = req.params.email;
@@ -114,6 +123,7 @@ async function run() {
       res.send(result)
     });
 
+    //update user role by admin
     app.patch('/update-role/:id', async(req, res) => {
       const userId = req.params.id;
       const updateRole = req.body;
