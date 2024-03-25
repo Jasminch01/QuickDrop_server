@@ -30,6 +30,7 @@ async function run() {
     const bookingCollection = client
       .db("QuickDrop")
       .collection("bookingCollection");
+    const assignedParcel = client.db("QuickDrop").collection("assignedParcels");
 
     //GET API's
     app.get("/users", async (req, res) => {
@@ -105,6 +106,13 @@ async function run() {
       const result = await bookingCollection.insertOne(booking);
       res.send(result);
     });
+
+    //POST parcel delivery assigned
+    app.post("/parcel-assigned", async(req, res) => {
+      const assigned = req.body;
+      const result = await assignedParcel.insertOne(assigned);
+      res.send(result)
+    })
 
     //PATCH API's
     app.patch("/users-update/:email", async (req, res) => {
