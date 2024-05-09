@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
+app.use(cors({ origin: ["http://localhost:5173", 'https://quicdrop-a1c9c.web.app'], credentials: true }));
 
 const uri = process.env.uri;
 
